@@ -7,7 +7,6 @@ plugins {
     id("org.springframework.boot") apply false
     id("io.spring.dependency-management")
     id("org.asciidoctor.jvm.convert") apply false
-    id("org.jlleitschuh.gradle.ktlint") apply false
 }
 
 java.sourceCompatibility = JavaVersion.VERSION_17
@@ -19,6 +18,35 @@ allprojects {
     repositories {
         mavenCentral()
     }
+
+    val ktlint by configurations.creating
+    dependencies {
+        ktlint("com.pinterest:ktlint:0.50.0")
+    }
+
+    val outputDir = "${project.buildDir}/reports/ktlint/"
+    val inputFiles = project.fileTree(mapOf("dir" to "src", "include" to "**/*.kt"))
+
+    val ktlintCheck by tasks.creating(JavaExec::class) {
+        inputs.files(inputFiles)
+        outputs.dir(outputDir)
+
+        description = "Check Kotlin code style."
+        classpath = ktlint
+        mainClass = "com.pinterest.ktlint.Main"
+        args = listOf("src/**/*.kt")
+
+    }
+
+    val ktlintFormat by tasks.creating(JavaExec::class) {
+        inputs.files(inputFiles)
+        outputs.dir(outputDir)
+
+        description = "Fix Kotlin code style deviations."
+        classpath = ktlint
+        mainClass = "com.pinterest.ktlint.Main"
+        args = listOf("-F", "src/**/*.kt")
+    }
 }
 
 subprojects {
@@ -29,7 +57,6 @@ subprojects {
     apply(plugin = "org.springframework.boot")
     apply(plugin = "io.spring.dependency-management")
     apply(plugin = "org.asciidoctor.jvm.convert")
-    apply(plugin = "org.jlleitschuh.gradle.ktlint")
 
     dependencyManagement {
         imports {
