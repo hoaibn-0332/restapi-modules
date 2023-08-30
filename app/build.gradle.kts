@@ -6,6 +6,12 @@ tasks.getByName("jar") {
     enabled = false
 }
 
+allOpen {
+    annotation("javax.persistence.Entity")
+    annotation("javax.persistence.Embeddable")
+    annotation("javax.persistence.MappedSuperclass")
+}
+
 dependencies {
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     testImplementation("org.springframework.restdocs:spring-restdocs-mockmvc")
