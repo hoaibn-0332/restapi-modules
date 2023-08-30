@@ -15,6 +15,6 @@ class LocalizedException(
     }
 
     private fun getMessageForLocale(messageKey: String): String {
-        return ResourceBundle.getBundle("messages", Locale.ENGLISH).getString(messageKey)
+        return ResourceBundle.getBundle("messages").getString(messageKey)
     }
 }
