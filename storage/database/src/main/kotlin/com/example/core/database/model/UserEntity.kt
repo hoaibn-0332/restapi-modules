@@ -23,4 +23,4 @@ data class UserEntity(
 
 fun User.toEntity(): UserEntity = UserEntity(name = name, email = email)
 
-fun UserEntity.toUser(): User = User(id = id?.toInt(), name = name, email = email ?: "", token = "")
+fun UserEntity.toUser(): User = User(id = id?.toInt(), name = name, email = email ?: "", token = token?.token)
