@@ -7,5 +7,6 @@ data class User(
     val id: Int? = null,
     @field:NotBlank
     val name: String,
-    val email: String
+    val email: String,
+    val token: String?
 ) : Serializable
